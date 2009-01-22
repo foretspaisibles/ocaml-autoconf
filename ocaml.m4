@@ -1,12 +1,12 @@
 dnl autoconf macros for OCaml
 dnl by Olivier Andrieu
-dnl modified by Richard W.M. Jones
+dnl extensively modified by Richard W.M. Jones
 dnl from a configure.in by Jean-Christophe Filliâtre,
 dnl from a first script by Georges Mariano
 
 dnl For documentation, please read the ocaml.m4 man page.
 
-AC_DEFUN(AC_PROG_OCAML,
+AC_DEFUN([AC_PROG_OCAML],
 [dnl
   # checking for ocamlc
   AC_CHECK_TOOL(OCAMLC,ocamlc,no)
@@ -39,7 +39,7 @@ AC_DEFUN(AC_PROG_OCAML,
 
      # checking for ocamlc.opt
      AC_CHECK_TOOL(OCAMLCDOTOPT,ocamlc.opt,no)
-     if test "$OCAMLCDOTOPT" = "no"; then
+     if test "$OCAMLCDOTOPT" != "no"; then
      	TMPVERSION=`$OCAMLCDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	    AC_MSG_RESULT(versions differs from ocamlc; ocamlc.opt discarded.)
@@ -50,8 +50,8 @@ AC_DEFUN(AC_PROG_OCAML,
 
      # checking for ocamlopt.opt
      if test "$OCAMLOPT" != "no" ; then
-     	AC_CHECK_PROG(OCAMLOPTDOTOPT,ocamlopt.opt,no)
-	if test "$OCAMLOPTDOTOPT"; then
+     	AC_CHECK_TOOL(OCAMLOPTDOTOPT,ocamlopt.opt,no)
+	if test "$OCAMLOPTDOTOPT" != "no"; then
 	   TMPVERSION=`$OCAMLOPTDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	   if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	      AC_MSG_RESULT(version differs from ocamlc; ocamlopt.opt discarded.)
@@ -80,7 +80,7 @@ AC_DEFUN(AC_PROG_OCAML,
 ])
 
 
-AC_DEFUN(AC_PROG_OCAMLLEX,
+AC_DEFUN([AC_PROG_OCAMLLEX],
 [dnl
   # checking for ocamllex
   AC_CHECK_TOOL(OCAMLLEX,ocamllex,no)
@@ -93,16 +93,16 @@ AC_DEFUN(AC_PROG_OCAMLLEX,
   AC_SUBST(OCAMLLEX)
 ])
 
-AC_DEFUN(AC_PROG_OCAMLYACC,
+AC_DEFUN([AC_PROG_OCAMLYACC],
 [dnl
   AC_CHECK_TOOL(OCAMLYACC,ocamlyacc,no)
   AC_SUBST(OCAMLYACC)
 ])
 
 
-AC_DEFUN(AC_PROG_CAMLP4,
+AC_DEFUN([AC_PROG_CAMLP4],
 [dnl
-  AC_REQUIRE([AC_PROG_OCAML])
+  AC_REQUIRE([AC_PROG_OCAML])dnl
 
   # checking for camlp4
   AC_CHECK_TOOL(CAMLP4,camlp4,no)
@@ -117,9 +117,9 @@ AC_DEFUN(AC_PROG_CAMLP4,
 ])
 
 
-AC_DEFUN(AC_PROG_FINDLIB,
+AC_DEFUN([AC_PROG_FINDLIB],
 [dnl
-  AC_REQUIRE([AC_PROG_OCAML])
+  AC_REQUIRE([AC_PROG_OCAML])dnl
 
   # checking for ocamlfind
   AC_CHECK_TOOL(OCAMLFIND,ocamlfind,no)
@@ -127,33 +127,34 @@ AC_DEFUN(AC_PROG_FINDLIB,
 ])
 
 
-AC_DEFUN(AC_CHECK_OCAML_PKG,
+dnl Thanks to Jim Meyering for working this next bit out for us.
+dnl XXX We should define AS_TR_SH if it's not defined already
+dnl (eg. for old autoconf).
+AC_DEFUN([AC_CHECK_OCAML_PKG],
 [dnl
-  AC_REQUIRE([AC_PROG_FINDLIB])
+  AC_REQUIRE([AC_PROG_FINDLIB])dnl
 
-  AC_MSG_CHECKING(findlib package $1)
-
-  TMPNAME="OCAML_PKG_`echo $1 | tr - _`"
+  AC_MSG_CHECKING([for OCaml findlib package $1])
 
   if $OCAMLFIND query $1 >/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(found)
-    eval "$TMPNAME=yes"
+    AC_MSG_RESULT([found])
+    AS_TR_SH([OCAML_PKG_$1])=yes
   else
-    AC_MSG_RESULT(not found)
-    eval "$TMPNAME=no"
+    AC_MSG_RESULT([not found])
+    AS_TR_SH([OCAML_PKG_$1])=no
   fi
 
-  AC_SUBST($TMPNAME)
+  AC_SUBST(AS_TR_SH([OCAML_PKG_$1]))
 ])
 
 
 AC_DEFUN([AC_CHECK_OCAML_MODULE],
 [dnl
-  AC_MSG_CHECKING(for module $2)
+  AC_MSG_CHECKING(for OCaml module $2)
 
   cat > conftest.ml <<EOF
-  open $3
-  EOF
+open $3
+EOF
   unset found
   for $1 in $$1 $4 ; do
     if $OCAMLC -c -I "$$1" conftest.ml >&5 2>&5 ; then
@@ -166,9 +167,9 @@ AC_DEFUN([AC_CHECK_OCAML_MODULE],
     AC_MSG_RESULT($$1)
   else
     AC_MSG_RESULT(not found)
-    $2=no
+    $1=no
   fi
-  AC_SUBST($2)
+  AC_SUBST($1)
 ])
 
 

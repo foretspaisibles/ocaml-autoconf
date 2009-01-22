@@ -19,7 +19,10 @@ autoconf-generated configure scripts.
 To begin using these macros, you will need to copy the C<ocaml.m4>
 file to the autoconf macros directory in your project.  Normally this
 is the C<m4/> directory in your project, but the directory can be
-changed using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.
+changed using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have
+just created the C<m4> directory, then you may also need to do:
+
+ aclocal -I m4
 
 You can then add any of the macros described below to your
 C<configure.ac> (or C<configure.in>).  Almost every OCaml project
@@ -71,6 +74,14 @@ about it.
 This macro checks for the presence of the ocamlfind program (part of
 findlib).  It defines and substitutes C<OCAMLFIND> to the name of the
 ocamlfind program, or C<no> if not found.
+
+Note that this macro does not fail if ocamlfind is not found.  If you
+want to force the user to install findlib, you should do:
+
+ AC_PROG_FINDLIB
+ if test "$OCAMLFIND" = "no"; then
+   AC_MSG_ERROR([You must install OCaml findlib (the ocamlfind command)])
+ fi
 
 See also C<AC_CHECK_OCAML_PKG>.
 
@@ -126,7 +137,7 @@ eg:
  .ml.cmo:
    $(OCAMLFIND) ocamlc -package foo -c $< -o $@
 
-=head1 AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATH)
+=head1 AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATHS)
 
 C<AC_CHECK_OCAML_MODULE> is the hairier alternative to
 C<AC_CHECK_OCAML_PKG>.  You should always use C<AC_CHECK_OCAML_PKG>
@@ -153,7 +164,7 @@ This should be an OCaml module name, representing the module name
 being looked up.  You can put submodules here, eg.
 C<CalendarLib.Date>
 
-=item INCLUDE-PATH
+=item INCLUDE-PATHS
 
 This is the default list of include directories to search, eg.
 C<+calendar>
@@ -172,7 +183,7 @@ C<is_calendar2> will be set as follows:
 
  OCAML_PKG_calendar  is_calendar2  Result
  
- yes                 yes           Calendar v2 is installed
+ yes                 +calendar     Calendar v2 is installed
  yes                 no            Calendar v1 is installed
  no                  no            No Calendar module installed
 
