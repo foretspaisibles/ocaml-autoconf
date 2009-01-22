@@ -19,7 +19,7 @@ ocaml.m4.txt: ocaml.m4.pod
 	pod2text $< > $@
 
 clean:
-	rm -f ocaml.m4.1 ocaml.m4.txt
+	rm -f *~ ocaml.m4.1 ocaml.m4.txt
 
 install: install-macro install-man
 
