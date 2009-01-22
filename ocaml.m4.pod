@@ -16,11 +16,12 @@ B<ocaml.m4> is a file containing standard, useful autoconf macros for
 detecting OCaml, findlib, OCaml packages and so on in your
 autoconf-generated configure scripts.
 
-To begin using these macros, you will need to copy the C<ocaml.m4>
-file to the autoconf macros directory in your project.  Normally this
-is the C<m4/> directory in your project, but the directory can be
-changed using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have
-just created the C<m4> directory, then you may also need to do:
+To begin using these macros, you will need to copy the
+C</usr/share/ocaml-autoconf/ocaml.m4> file to the autoconf macros
+directory in your project.  Normally this is the C<m4/> directory in
+your project, but the directory can be changed using the
+C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have just created the
+C<m4> directory, then you may also need to do:
 
  aclocal -I m4
 
@@ -198,6 +199,16 @@ L<autoconf(1)>,
 L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>,
 L<http://caml.inria.fr/>
 
+=head1 FILES
+
+=over
+
+=item *
+
+/usr/share/ocaml-autoconf/ocaml.m4
+
+=back
+
 =head1 AUTHORS
 
 Various people have contributed to these macros over many years:
@@ -219,6 +230,10 @@ Richard W.M. Jones
 =item *
 
 Georges Mariano
+
+=item *
+
+Jim Meyering
 
 =item *
 
