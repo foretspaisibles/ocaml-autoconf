@@ -1,0 +1,113 @@
+=encoding utf8
+
+=head1 NAME
+
+ocaml.m4 - Autoconf macros for OCaml
+
+=head1 SUMMARY
+
+ AC_PROG_OCAML
+ AC_PROG_FINDLIB
+ AC_CHECK_OCAML_PKG([extlib])
+
+=head1 DESCRIPTION
+
+B<ocaml.m4> is a file containing standard, useful autoconf macros for
+detecting OCaml, findlib, OCaml packages and so on in your
+autoconf-generated configure scripts.
+
+To begin using these macros, you will need to copy the C<ocaml.m4>
+file to the autoconf macros directory in your project.  Normally this
+is the C<m4/> directory in your project, but the directory can be
+changed using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.
+
+You can then add any of the macros described below to your
+C<configure.ac> (or C<configure.in>).  Almost every OCaml project
+should use C<AC_PROG_OCAML> first and probably C<AC_PROG_FINDLIB>
+right after it.
+
+This manual page does not describe how to use autoconf.  For that you
+should read the detailed autoconf info file (C<info autoconf>).
+
+=head1 AC_PROG_OCAML
+
+This macro detects whether the OCaml compiler(s) are available.  It
+defines and substitutes the following variables:
+
+ OCAMLC          set to the name of the bytecode compiler
+                   (eg. "ocamlc" or "ocamlc.opt"), or "no" if
+                   no OCaml installation was found
+ OCAMLOPT        the name of the native-code compiler, eg. "ocamlopt",
+                   "ocamlopt.opt" or "no"
+ OCAMLBEST       "byte" or "opt" or "no"
+ OCAMLDEP        the name of the dependency resolver, eg. "ocamldep"
+ OCAMLLIB        the OCaml library path
+ OCAMLVERSION    the compiler version
+
+=head2 Detecting if OCaml is installed
+
+Unlike old versions of these macros, C<AC_PROG_OCAML> does I<not> exit
+if no OCaml installation is detected.  Therefore if you want to detect
+if OCaml is installed you have to do something like this:
+
+ AC_PROG_OCAML
+ if test "$OCAMLC" = "no"; then
+   AC_MSG_ERROR([You must install the OCaml compiler])
+ fi
+
+=head2 Cross-compiling
+
+If the configure script is invoked for cross-compiling then
+C<AC_PROG_OCAML> will detect the cross-compiler versions of the OCaml
+compiler, eg. C<OCAMLC=i686-pc-mingw32-ocamlc> etc.  This
+happens automatically, and for most purposes you don't need to worry
+about it.
+
+=head1 AC_PROG_FINDLIB
+
+
+
+
+=head1 SEE ALSO
+
+L<autoconf(1)>,
+L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>,
+L<http://caml.inria.fr/>
+
+=head1 AUTHORS
+
+Various people have contributed to these macros over many years:
+
+=over
+
+=item *
+
+Olivier Andrieu
+
+=item *
+
+Jean-Christophe Filliâtre
+
+=item *
+
+Richard W.M. Jones
+
+=item *
+
+Georges Mariano
+
+=item *
+
+Stefano Zacchiroli
+
+=back
+
+=head1 LICENSE
+
+
+
+
+=head1 REPORTING BUGS
+
+Please report bugs to the authors at the following website:
+L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>

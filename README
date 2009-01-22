@@ -1,1 +1,38 @@
-test
+This archive contains standard, useful autoconf macros for detecting
+OCaml, findlib, OCaml packages, etc.
+
+http://forge.ocamlcore.org/projects/ocaml-autoconf/
+
+Authors
+----------------------------------------------------------------------
+
+* Olivier Andrieu
+* Jean-Christophe Filliâtre
+* Richard W.M. Jones
+* Georges Mariano
+* Stefano Zacchiroli
+
+Requirements
+----------------------------------------------------------------------
+
+To build the manual page, you'll need 'perldoc' (part of Perl).
+
+Building
+----------------------------------------------------------------------
+
+To build the manual page, etc., do:
+
+  make
+
+To install the manual page and macro centrally, do:
+
+  make install
+
+Using
+----------------------------------------------------------------------
+
+Copy ocaml.m4 into the autoconf macros directory (usually m4/) of your
+project.  Read the ocaml.m4 manual page for the details of how to use
+the macros.
+
+  man ocaml.m4
