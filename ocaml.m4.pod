@@ -41,6 +41,9 @@ defines and substitutes the following variables:
                    "ocamlopt.opt" or "no"
  OCAMLBEST       "byte" or "opt" or "no"
  OCAMLDEP        the name of the dependency resolver, eg. "ocamldep"
+ OCAMLMKTOP      the name of ocamlmktop
+ OCAMLMKLIB      the name of ocamlmklib
+ OCAMLDOC        the name of ocamldoc
  OCAMLLIB        the OCaml library path
  OCAMLVERSION    the compiler version
 
@@ -65,8 +68,118 @@ about it.
 
 =head1 AC_PROG_FINDLIB
 
+This macro checks for the presence of the ocamlfind program (part of
+findlib).  It defines and substitutes C<OCAMLFIND> to the name of the
+ocamlfind program, or C<no> if not found.
 
+See also C<AC_CHECK_OCAML_PKG>.
 
+=head1 AC_PROG_OCAMLLEX
+
+This checks for the ocamllex program and sets C<OCAMLLEX> to the name
+of the program (eg. C<ocamllex> or C<ocamllex.opt>), or C<no> if not
+found.
+
+=head1 AC_PROG_OCAMLYACC
+
+This checks for the ocamlyacc program and sets C<OCAMLYACC> to the
+name of the program, or C<no> if not found.
+
+=head1 AC_PROG_CAMLP4
+
+This checks for camlp4, and checks that the version matches the
+compiler version found previously.  It sets C<CAMLP4> to the name of
+the basic camlp4 program, or C<no> if not found.
+
+=head1 AC_CHECK_OCAML_PKG
+
+This is the main macro that can be used to detect the presence of
+OCaml modules.  This macro uses ocamlfind to look up findlib packages
+(and thus requires that findlib itself has been installed and that the
+package has been properly packaged with a META file etc.)  If you want
+to find an OCaml module which hasn't been installed with findlib then
+you should try using C<AC_CHECK_OCAML_MODULE> instead.
+
+ AC_CHECK_OCAML_PKG([name])
+
+checks for an OCaml module with the given name.  If found, it defines
+and substitutes the variable C<OCAML_PKG_name> where the C<name> part
+is substituted from the package name by replacing all dashes with
+underscores.
+
+For example,
+
+ AC_CHECK_OCAML_PKG([xml-light])
+
+will set C<OCAML_PKG_xml_light> to either C<yes> or C<no>.
+
+To have the configure script fail if a package is not installed, do:
+
+ AC_CHECK_OCAML_PKG([foo])
+ if test "$OCAML_PKG_foo" = "no"; then
+   AC_MSG_ERROR([Please install OCaml library 'foo'.])
+ fi
+
+In your Makefile.in, use package names in conjunction with ocamlfind,
+eg:
+
+ .ml.cmo:
+   $(OCAMLFIND) ocamlc -package foo -c $< -o $@
+
+=head1 AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATH)
+
+C<AC_CHECK_OCAML_MODULE> is the hairier alternative to
+C<AC_CHECK_OCAML_PKG>.  You should always use C<AC_CHECK_OCAML_PKG>
+and ocamlfind/findlib if possible.
+
+The parameters are:
+
+=over
+
+=item VARIABLE
+
+This is the environment variable that is set.  It will either be set
+to the include path, or to C<no> if the module was not found.
+
+=item NAME
+
+This is the name of the module we are looking for.  This parameter is
+just used for printing messages, and does not affect how the module is
+found.
+
+=item MODULE
+
+This should be an OCaml module name, representing the module name
+being looked up.  You can put submodules here, eg.
+C<CalendarLib.Date>
+
+=item INCLUDE-PATH
+
+This is the default list of include directories to search, eg.
+C<+calendar>
+
+=back
+
+For example, the following code will check for the OCaml Calendar
+module, and will distinguish between version 1 and version 2 of
+this module (which have incompatible APIs).
+
+ AC_CHECK_OCAML_PKG(calendar)
+ AC_CHECK_OCAML_MODULE(is_calendar2,calendar,[CalendarLib.Date],[+calendar])
+
+After the above code has run, variables C<OCAML_PKG_calendar> and
+C<is_calendar2> will be set as follows:
+
+ OCAML_PKG_calendar  is_calendar2  Result
+ 
+ yes                 yes           Calendar v2 is installed
+ yes                 no            Calendar v1 is installed
+ no                  no            No Calendar module installed
+
+=head1 AC_CHECK_OCAML_WORD_SIZE
+
+This checks the word size of the OCaml compiler, and sets
+C<OCAML_WORD_SIZE> to either C<32> or C<64>.
 
 =head1 SEE ALSO
 
@@ -103,6 +216,11 @@ Stefano Zacchiroli
 =back
 
 =head1 LICENSE
+
+
+
+
+
 
 
 
