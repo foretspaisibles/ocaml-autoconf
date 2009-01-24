@@ -13,20 +13,20 @@ ocaml.m4 - Autoconf macros for OCaml
 =head1 DESCRIPTION
 
 B<ocaml.m4> is a file containing standard, useful autoconf macros for
-detecting OCaml, findlib, OCaml packages and so on in your
-autoconf-generated configure scripts.
+detecting the OCaml, findlib, OCaml packages, and so on in your
+autoconf-generated ./configure scripts.
 
-To begin using these macros, you will need to copy the
-C</usr/share/ocaml-autoconf/ocaml.m4> file to the autoconf macros
-directory in your project.  Normally this is the C<m4/> directory in
-your project, but the directory can be changed using the
-C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have just created the
-C<m4> directory, then you may also need to do:
+To begin using these macros, you will need to copy the C<ocaml.m4>
+file (usually located at C</usr/share/ocaml-autoconf/ocaml.m4>) to the
+autoconf macros directory in your project.  Normally this is the
+C<m4/> directory in your project, but the directory can be changed
+using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have just
+created the C<m4/> directory, then you may also need to do:
 
  aclocal -I m4
 
 You can then add any of the macros described below to your
-C<configure.ac> (or C<configure.in>).  Almost every OCaml project
+C<configure.ac> (or C<configure.in>). Almost every OCaml project
 should use C<AC_PROG_OCAML> first and probably C<AC_PROG_FINDLIB>
 right after it.
 
@@ -35,21 +35,23 @@ should read the detailed autoconf info file (C<info autoconf>).
 
 =head1 AC_PROG_OCAML
 
-This macro detects whether the OCaml compiler(s) are available.  It
-defines and substitutes the following variables:
+This macro detects which tools of the usual OCaml toolchain are
+available. It defines and substitutes the following variables:
 
  OCAMLC          set to the name of the bytecode compiler
                    (eg. "ocamlc" or "ocamlc.opt"), or "no" if
                    no OCaml installation was found
  OCAMLOPT        the name of the native-code compiler, eg. "ocamlopt",
                    "ocamlopt.opt" or "no"
- OCAMLBEST       "byte" or "opt" or "no"
+ OCAMLBEST       "byte" (if only the bytecode compiler is available)
+                   or "opt" (if both bytecode and native code compilers
+		   are available)
  OCAMLDEP        the name of the dependency resolver, eg. "ocamldep"
  OCAMLMKTOP      the name of ocamlmktop
  OCAMLMKLIB      the name of ocamlmklib
  OCAMLDOC        the name of ocamldoc
- OCAMLLIB        the OCaml library path
- OCAMLVERSION    the compiler version
+ OCAMLLIB        the OCaml library path (eg. C</usr/lib/ocaml/>)
+ OCAMLVERSION    the compiler version (eg. C<3.11.0>)
 
 =head2 Detecting if OCaml is installed
 
@@ -62,13 +64,15 @@ if OCaml is installed you have to do something like this:
    AC_MSG_ERROR([You must install the OCaml compiler])
  fi
 
+This behaviour and usage pattern are consistent with other macros of
+the C<AC_PROG_*>) family.
+
 =head2 Cross-compiling
 
 If the configure script is invoked for cross-compiling then
 C<AC_PROG_OCAML> will detect the cross-compiler versions of the OCaml
-compiler, eg. C<OCAMLC=i686-pc-mingw32-ocamlc> etc.  This
-happens automatically, and for most purposes you don't need to worry
-about it.
+compiler, eg. C<OCAMLC=i686-pc-mingw32-ocamlc> etc.  This happens
+automatically, and for most purposes you don't need to worry about it.
 
 =head1 AC_PROG_FINDLIB
 
@@ -106,18 +110,19 @@ the basic camlp4 program, or C<no> if not found.
 =head1 AC_CHECK_OCAML_PKG
 
 This is the main macro that can be used to detect the presence of
-OCaml modules.  This macro uses ocamlfind to look up findlib packages
-(and thus requires that findlib itself has been installed and that the
-package has been properly packaged with a META file etc.)  If you want
-to find an OCaml module which hasn't been installed with findlib then
-you should try using C<AC_CHECK_OCAML_MODULE> instead.
+OCaml findlib packages.  This macro uses ocamlfind to look up findlib
+packages (and thus requires that findlib itself has been installed,
+and that the package has been properly packaged with a META file etc.)
+If you want to find an OCaml findlib package which hasn't been
+installed with findlib then you should try using
+C<AC_CHECK_OCAML_MODULE> instead.
 
  AC_CHECK_OCAML_PKG([name])
 
-checks for an OCaml module with the given name.  If found, it defines
-and substitutes the variable C<OCAML_PKG_name> where the C<name> part
-is substituted from the package name by replacing all dashes with
-underscores.
+checks for an OCaml findlib package with the given name. If found, it
+defines and substitutes the variable C<OCAML_PKG_name> where the
+C<name> part is substituted for the package name by replacing all
+dashes with underscores.
 
 For example,
 
@@ -129,7 +134,7 @@ To have the configure script fail if a package is not installed, do:
 
  AC_CHECK_OCAML_PKG([foo])
  if test "$OCAML_PKG_foo" = "no"; then
-   AC_MSG_ERROR([Please install OCaml library 'foo'.])
+   AC_MSG_ERROR([Please install OCaml findlib module 'foo'.])
  fi
 
 In your Makefile.in, use package names in conjunction with ocamlfind,
@@ -162,7 +167,7 @@ found.
 =item MODULE
 
 This should be an OCaml module name, representing the module name
-being looked up.  You can put submodules here, eg.
+being looked up.  You can put sub-modules here, eg.
 C<CalendarLib.Date>
 
 =item INCLUDE-PATHS
@@ -173,8 +178,8 @@ C<+calendar>
 =back
 
 For example, the following code will check for the OCaml Calendar
-module, and will distinguish between version 1 and version 2 of
-this module (which have incompatible APIs).
+module, and will distinguish between version 1 and version 2 of this
+module (which have incompatible APIs).
 
  AC_CHECK_OCAML_PKG(calendar)
  AC_CHECK_OCAML_MODULE(is_calendar2,calendar,[CalendarLib.Date],[+calendar])
@@ -243,15 +248,8 @@ Stefano Zacchiroli
 
 =head1 LICENSE
 
-
-
-
-
-
-
-
-
 =head1 REPORTING BUGS
 
 Please report bugs to the authors at the following website:
-L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>
+L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>, using the
+forge bug tracker.
