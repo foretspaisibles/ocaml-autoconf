@@ -107,6 +107,22 @@ This checks for camlp4, and checks that the version matches the
 compiler version found previously.  It sets C<CAMLP4> to the name of
 the basic camlp4 program, or C<no> if not found.
 
+The macro also checks for other tools of the camlp4 suite like
+camlp4o, camlp4orf, etc. For each of them, a fully capitalized
+variable is set to the tool name (or C<no> if not found); all variable
+are substituted for when filling .in files. The full list of tools and
+respective variable names is as follows:
+
+ camlp4        CAMLP4
+ camlp4boot    CAMLP4BOOT
+ camlp4o       CAMLP4O
+ camlp4of      CAMLP4OF
+ camlp4oof     CAMLP4OOF
+ camlp4orf     CAMLP4ORF
+ camlp4prof    CAMLP4PROF
+ camlp4r       CAMLP4R
+ camlp4rf      CAMLP4RF
+
 =head1 AC_CHECK_OCAML_PKG
 
 This is the main macro that can be used to detect the presence of
