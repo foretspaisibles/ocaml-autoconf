@@ -128,7 +128,7 @@ For example,
 
  AC_CHECK_OCAML_PKG([xml-light])
 
-will set C<OCAML_PKG_xml_light> to either C<yes> or C<no>.
+will set C<OCAML_PKG_xml_light> to either C<xml-light> or C<no>.
 
 To have the configure script fail if a package is not installed, do:
 
@@ -137,11 +137,42 @@ To have the configure script fail if a package is not installed, do:
    AC_MSG_ERROR([Please install OCaml findlib module 'foo'.])
  fi
 
-In your Makefile.in, use package names in conjunction with ocamlfind,
-eg:
+In your Makefile.in, use the substitution variable in conjunction with
+ocamlfind, eg:
 
  .ml.cmo:
-   $(OCAMLFIND) ocamlc -package foo -c $< -o $@
+   $(OCAMLFIND) ocamlc -package @OCAML_PKG_foo@ -c $< -o $@
+
+Note that also in the substitution variable dashes are replaced with
+underscores.
+
+=head2 Checking for alternative findlib package names
+
+In the (unlikely) case where the same library corresponds to different
+findlib package names on different systems, you can improve
+portability by checking for the alternative names passing a second
+argument to C<AC_CHECK_OCAML_PKG>:
+
+ AC_CHECK_OCAML_PKG(PKGNAME,ALTERNATIVE-NAMES)
+
+The behaviour is the same as before if C<PKGNAME> is found. Otherwise
+all names in C<ALTERNATIVE-NAMES> are tested in turn as findlib
+package names. If one is found, it is set as the value set by the
+macro and substituted in .in files; otherwise C<no> is set.
+
+Note that the variable name is determined by C<PKGNAME>, while the
+value depends on the actual alternative name found.
+
+For example, to detect the camlzip findlib package, either called
+C<zip> or C<camlzip>, and to store the found value in the
+C<OCAML_PKG_zip> variable you can do in your configure.ac:
+
+ AC_CHECK_OCAML_PKG(zip,camlzip)
+
+and have a portable Makefile.in build line such as:
+
+ .ml.cmo:
+   $(OCAMLFIND) ocamlc -package @OCAML_PKG_zip@ -c $< -o $@
 
 =head1 AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATHS)
 

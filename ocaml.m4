@@ -136,10 +136,18 @@ AC_DEFUN([AC_CHECK_OCAML_PKG],
 
   AC_MSG_CHECKING([for OCaml findlib package $1])
 
-  if $OCAMLFIND query $1 >/dev/null 2>/dev/null; then
-    AC_MSG_RESULT([found])
-    AS_TR_SH([OCAML_PKG_$1])=yes
-  else
+  unset found
+  unset pkg
+  found=no
+  for pkg in $1 $2 ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      AC_MSG_RESULT([found])
+      AS_TR_SH([OCAML_PKG_$1])=$pkg
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
     AC_MSG_RESULT([not found])
     AS_TR_SH([OCAML_PKG_$1])=no
   fi
