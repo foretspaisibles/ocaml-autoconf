@@ -17,7 +17,7 @@ detecting the OCaml, findlib, OCaml packages, and so on in your
 autoconf-generated ./configure scripts.
 
 To begin using these macros, you will need to copy the C<ocaml.m4>
-file (usually located at C</usr/share/ocaml-autoconf/ocaml.m4>) to the
+file (usually located at C</usr/share/aclocal/ocaml.m4>) to the
 autoconf macros directory in your project.  Normally this is the
 C<m4/> directory in your project, but the directory can be changed
 using the C<AC_CONFIG_MACRO_DIR(DIR)> directive.  If you have just
@@ -257,7 +257,7 @@ L<http://caml.inria.fr/>
 
 =item *
 
-/usr/share/ocaml-autoconf/ocaml.m4
+/usr/share/aclocal/ocaml.m4
 
 =back
 

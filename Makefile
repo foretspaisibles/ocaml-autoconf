@@ -24,8 +24,8 @@ clean:
 install: install-macro install-man
 
 install-macro:
-	$(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/
-	$(INSTALL) -m 0644 ocaml.m4 $(DESTDIR)$(datadir)/$(PACKAGE)/
+	$(MKDIR_P) $(DESTDIR)$(datadir)/aclocal/
+	$(INSTALL) -m 0644 ocaml.m4 $(DESTDIR)$(datadir)/aclocal/
 
 install-man:
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1/
