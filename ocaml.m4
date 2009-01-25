@@ -1,9 +1,11 @@
 dnl autoconf macros for OCaml
-dnl by Olivier Andrieu
-dnl extensively modified by Richard W.M. Jones
-dnl from a configure.in by Jean-Christophe Filliâtre,
-dnl from a first script by Georges Mariano
-
+dnl
+dnl Copyright © 2009      Richard W.M. Jones
+dnl Copyright © 2009      Stefano Zacchiroli
+dnl Copyright © 2000-2005 Olivier Andrieu
+dnl Copyright © 2000-2005 Jean-Christophe Filliâtre
+dnl Copyright © 2000-2005 Georges Mariano
+dnl
 dnl For documentation, please read the ocaml.m4 man page.
 
 AC_DEFUN([AC_PROG_OCAML],
