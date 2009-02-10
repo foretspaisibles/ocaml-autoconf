@@ -50,6 +50,7 @@ available. It defines and substitutes the following variables:
  OCAMLMKTOP      the name of ocamlmktop
  OCAMLMKLIB      the name of ocamlmklib
  OCAMLDOC        the name of ocamldoc
+ OCAMLBUILD      the name of ocamlbuild
  OCAMLLIB        the OCaml library path (eg. C</usr/lib/ocaml/>)
  OCAMLVERSION    the compiler version (eg. C<3.11.0>)
 

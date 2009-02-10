@@ -79,6 +79,9 @@ AC_DEFUN([AC_PROG_OCAML],
 
   # checking for ocamldoc
   AC_CHECK_TOOL([OCAMLDOC],[ocamldoc],[no])
+
+  # checking for ocamlbuild
+  AC_CHECK_TOOL([OCAMLBUILD],[ocamlbuild],[no])
 ])
 
 
