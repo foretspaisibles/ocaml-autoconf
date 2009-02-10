@@ -1,10 +1,10 @@
 dnl autoconf macros for OCaml
 dnl
-dnl Copyright © 2009      Richard W.M. Jones
-dnl Copyright © 2009      Stefano Zacchiroli
-dnl Copyright © 2000-2005 Olivier Andrieu
-dnl Copyright © 2000-2005 Jean-Christophe Filliâtre
-dnl Copyright © 2000-2005 Georges Mariano
+dnl Copyright Â© 2009      Richard W.M. Jones
+dnl Copyright Â© 2009      Stefano Zacchiroli
+dnl Copyright Â© 2000-2005 Olivier Andrieu
+dnl Copyright Â© 2000-2005 Jean-Christophe FilliÃ¢tre
+dnl Copyright Â© 2000-2005 Georges Mariano
 dnl
 dnl For documentation, please read the ocaml.m4 man page.
 
