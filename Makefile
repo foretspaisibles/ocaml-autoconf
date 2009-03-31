@@ -9,6 +9,7 @@ INSTALL = install
 MKDIR_P = mkdir -p
 
 all: man ocaml.m4.txt
+doc: man ocaml.m4.txt ocaml.m4.html
 
 man: ocaml.m4.1
 
@@ -17,6 +18,9 @@ ocaml.m4.1: ocaml.m4.pod
 
 ocaml.m4.txt: ocaml.m4.pod
 	pod2text $< > $@
+
+ocaml.m4.html: ocaml.m4.pod
+	pod2html $< > $@
 
 clean:
 	rm -f *~ ocaml.m4.1 ocaml.m4.txt
