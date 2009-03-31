@@ -1,0 +1,99 @@
+[ Text version of an introductory blog post by Richard WM Jones, which
+  provides a brief tutorial on how to use ocaml-autoconf with a
+  complete autotools toolchain, i.e., autoconf + automake. Permalink
+  of the original blogpost:
+  http://rwmj.wordpress.com/2009/03/31/using-autoconf-for-ocaml-projects/ ]
+
+Using autoconf for OCaml projects
+=================================
+
+Today Zack and I released the first version of ocaml-autoconf, which
+is a collection of OCaml-related autoconf macros. That package won’t
+tell you how to use autoconf though, and that is something that people
+wrongly regard as being incomprehensible or too hard to learn. In this
+tutorial you’ll see that you only need to create two files to start
+even a complex autoconf / OCaml project.
+
+configure.ac
+------------
+
+The first file controls autoconf. It is called configure.ac and looks
+like this. Notice the use of the OCaml autoconf macros which are
+documented in the ocaml.m4 manual page.
+
+AC_INIT(ocaml-autoconf-example,1.0)
+AM_INIT_AUTOMAKE
+
+AC_PROG_CC
+
+AC_PROG_OCAML
+if test "$OCAMLC" = "no"; then
+  AC_MSG_ERROR([You must install the OCaml compiler])
+fi
+
+AC_PROG_FINDLIB
+if test "$OCAMLFIND" = "no"; then
+  AC_MSG_ERROR([You must install OCaml findlib (the ocamlfind command)])
+fi
+
+AC_CHECK_OCAML_PKG([lablgtk2])
+if test "$OCAML_PKG_lablgtk2" = "no"; then
+  AC_MSG_ERROR([Please install OCaml findlib module 'lablgtk2'.])
+fi
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+
+Makefile.am
+-----------
+
+The second file controls automake. In fact we’re not really using
+automake’s capabilities, so our Makefile.am looks almost like an
+ordinary Makefile:
+
+bin_SCRIPTS = gtk_test$(EXEEXT)
+
+PACKAGES = -package lablgtk2
+LIBS     = gtkInit.cmo -linkpkg
+
+gtk_test$(EXEEXT): gtk_test.cmo
+        $(OCAMLFIND) ocamlc $(PACKAGES) $(LIBS) $^ -o $@
+
+.ml.cmo:
+        ocamlfind ocamlc $(PACKAGES) -c $< -o $@
+
+EXTRA_DIST = gtk_test.ml
+
+CLEANFILES = *.cmi *.cmo $(bin_SCRIPTS) *~
+
+m4/ocaml.m4
+-----------
+
+Those are the only two files you have to write, but you will also need
+to copy the OCaml autoconf macros (ocaml.m4) into an m4/ subdirectory:
+
+mkdir m4
+cp /usr/share/aclocal/ocaml.m4 m4/
+
+autoreconf
+----------
+
+Finally run autoreconf to run autoconf and automake and generate the
+./ configure script. Because automake defaults to assuming your
+project conforms to all the GNU coding standards, you probably want to
+add the automake --foreign flag, so:
+
+AUTOMAKE='automake --foreign' autoreconf -i
+
+Finished
+
+Now you’re done. You can copy the gtk_test.ml program into this
+directory, and try:
+
+./configure
+make
+make dist
+make install
+
+etc.
+
