@@ -334,6 +334,6 @@ Stefano Zacchiroli
 
 =head1 REPORTING BUGS
 
-Please report bugs to the authors at the following website:
+Please report bugs to the authors at the project page:
 L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>, using the
-forge bug tracker.
+forge bug tracker L<http://forge.ocamlcore.org/tracker/?group_id=69>.
