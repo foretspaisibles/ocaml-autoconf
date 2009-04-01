@@ -254,7 +254,7 @@ C<OCAML_WORD_SIZE> to either C<32> or C<64>.
 =head1 SEE ALSO
 
 L<autoconf(1)>,
-L<http://forge.ocamlcore.org/projects/ocaml-autoconf/>,
+L<http://ocaml-autoconf.forge.ocamlcore.org>,
 L<http://caml.inria.fr/>
 
 =head1 FILES
