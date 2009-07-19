@@ -215,6 +215,7 @@ EOF
 dnl XXX Cross-compiling
 AC_DEFUN([AC_CHECK_OCAML_WORD_SIZE],
 [dnl
+  AC_REQUIRE([AC_PROG_OCAML])dnl
   AC_MSG_CHECKING([for OCaml compiler word size])
   cat > conftest.ml <<EOF
   print_endline (string_of_int Sys.word_size)
