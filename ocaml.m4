@@ -73,6 +73,9 @@ AC_DEFUN([AC_PROG_OCAML],
 
   AC_SUBST([OCAMLC])
 
+  # checking for ocaml toplevel
+  AC_CHECK_TOOL([OCAML],[ocaml],[no])
+
   # checking for ocamldep
   AC_CHECK_TOOL([OCAMLDEP],[ocamldep],[no])
 
@@ -216,7 +219,7 @@ AC_DEFUN([AC_CHECK_OCAML_WORD_SIZE],
   cat > conftest.ml <<EOF
   print_endline (string_of_int Sys.word_size)
   EOF
-  OCAML_WORD_SIZE=`ocaml conftest.ml`
+  OCAML_WORD_SIZE=`$OCAML conftest.ml`
   AC_MSG_RESULT([$OCAML_WORD_SIZE])
   AC_SUBST([OCAML_WORD_SIZE])
 ])
