@@ -16,7 +16,12 @@ AC_DEFUN([AC_PROG_OCAML],
   if test "$OCAMLC" != "no"; then
      OCAMLVERSION=`$OCAMLC -v | sed -n -e 's|.*version* *\(.*\)$|\1|p'`
      AC_MSG_RESULT([OCaml version is $OCAMLVERSION])
-     OCAMLLIB=`$OCAMLC -where 2>/dev/null || $OCAMLC -v|tail -1|cut -d ' ' -f 4`
+     # If OCAMLLIB is set, use it
+     if test "$OCAMLLIB" = ""; then
+        OCAMLLIB=`$OCAMLC -where 2>/dev/null || $OCAMLC -v|tail -1|cut -d ' ' -f 4`
+     else
+        AC_MSG_RESULT([OCAMLLIB previously set; preserving it.])
+     fi
      AC_MSG_RESULT([OCaml library path is $OCAMLLIB])
 
      AC_SUBST([OCAMLVERSION])
