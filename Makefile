@@ -1,5 +1,5 @@
 PACKAGE	= ocaml-autoconf
-VERSION	= 1.0
+VERSION	= 1.1
 
 prefix  = /usr/local
 datadir = $(prefix)/share
