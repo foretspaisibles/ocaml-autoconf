@@ -73,7 +73,7 @@ Those are the only two files you have to write, but you will also need
 to copy the OCaml autoconf macros (ocaml.m4) into an m4/ subdirectory:
 
 mkdir m4
-cp /usr/share/aclocal/ocaml.m4 m4/
+cp /usr/share/ocaml-autoconf/ocaml.m4 m4/
 
 autoreconf
 ----------
