@@ -1,0 +1,26 @@
+2009-10-12 Stefano Zacchiroli and Richard Jones
+	* Release 1.1
+
+	Including following Changes from the Git repository:
+	- 71c8a00 add changelog
+	- 55ead8c README: add development pointers
+	- 598c0fa update README: point to examples/
+	- 356209c Merge branch 'zack/examples'
+	- cd428fb relicense under the same conditions of ocaml-autoconf
+	- 1238b22 update ocaml.m4 location to reflect current installation dir
+	- 110f17a remove generated file
+	- d0ad968 drop bogus "All rights reserved" mention
+	- 88ede32 new macro: AC_CHECK_OCAML_OS_TYPE (return Sys.os_type)
+	- 2465e25 require AC_PROG_OCAML within word size check
+	- cbbea03 check for top-level presence upon AC_PROG_OCAML
+	- 166bc03 do not override OCAMLLIB if previously set
+	- 2e530de add bug tracker URL
+	- b2a7323 update project page URL
+	- 162459e checkin tutorial extracted from Rich's blog post
+	- 49c8a1a check in richard's ocaml-autoconf-example stuff
+	- 7cd8000 add target to generate HTML man page
+	- e71d985 typeset LICENSE section in POD as verbatim
+
+
+2009-03-31 Stefano Zacchiroli and Richard Jones
+	* Release 1.0 (first public release)
