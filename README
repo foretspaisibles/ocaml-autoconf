@@ -1,8 +1,7 @@
 This archive contains standard, useful autoconf macros for detecting
 OCaml, findlib, OCaml packages, etc.
 
-Home page:  http://ocaml-autoconf.forge.ocamlcore.org/
-Devel page: http://forge.ocamlcore.org/projects/ocaml-autoconf/
+Home page: http://ocaml-autoconf.forge.ocamlcore.org/
 
 Authors
 =======
@@ -43,4 +42,13 @@ Examples
 
 See the examples/ directory for a project skeleton using ocaml-autoconf,
 autoconf, and automake.
+
+Development
+===========
+
+Development home page: http://forge.ocamlcore.org/projects/ocaml-autoconf/
+
+Git repository available at:
+- (git clone) http://git.ocamlcore.org/ocaml-autoconf/ocaml-autoconf.git (clone URL)
+- (gitweb)    http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=ocaml-autoconf/ocaml-autoconf.git;a=summary
 
