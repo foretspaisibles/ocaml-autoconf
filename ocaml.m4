@@ -1,5 +1,6 @@
 dnl autoconf macros for OCaml
 dnl
+dnl Copyright © 2013      Gabriel Kerneis
 dnl Copyright © 2009      Richard W.M. Jones
 dnl Copyright © 2009      Stefano Zacchiroli
 dnl Copyright © 2000-2005 Olivier Andrieu
@@ -72,6 +73,18 @@ AC_DEFUN([AC_PROG_OCAML],
   fi
 
   AC_SUBST([OCAMLC])
+
+  # checking for native dynlink
+  AC_MSG_CHECKING([for dynlink.cmxa])
+  if test -f "$OCAMLLIB/dynlink.cmxa" ; then
+     OCAMLNATDYNLINK=yes
+     AC_MSG_RESULT([yes])
+  else
+     OCAMLNATDYNLINK=no
+     AC_MSG_RESULT([no])
+  fi
+
+  AC_SUBST([OCAMLNATDYNLINK])
 
   # checking for ocaml toplevel
   AC_CHECK_TOOL([OCAML],[ocaml],[no])
