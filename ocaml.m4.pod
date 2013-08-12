@@ -50,7 +50,8 @@ available. It defines and substitutes the following variables:
                    "ocamlopt.opt" or "no"
  OCAMLBEST       "byte" (if only the bytecode compiler is available)
                    or "opt" (if both bytecode and native code compilers
-		   are available)
+                   are available)
+ OCAMLNATDYNLINK "yes" (if native dynlink is available) or "no"
  OCAMLDEP        the name of the dependency resolver, eg. "ocamldep"
  OCAMLMKTOP      the name of ocamlmktop
  OCAMLMKLIB      the name of ocamlmklib
