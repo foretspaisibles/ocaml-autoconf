@@ -32,15 +32,15 @@ AC_DEFUN([AC_PROG_OCAML],
      AC_CHECK_TOOL([OCAMLOPT],[ocamlopt],[no])
      OCAMLBEST=byte
      if test "$OCAMLOPT" = "no"; then
-	AC_MSG_WARN([Cannot find ocamlopt; bytecode compilation only.])
+        AC_MSG_WARN([Cannot find ocamlopt; bytecode compilation only.])
      else
-	TMPVERSION=`$OCAMLOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
-	if test "$TMPVERSION" != "$OCAMLVERSION" ; then
-	    AC_MSG_RESULT([versions differs from ocamlc; ocamlopt discarded.])
-	    OCAMLOPT=no
-	else
-	    OCAMLBEST=opt
-	fi
+        TMPVERSION=`$OCAMLOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+        if test "$TMPVERSION" != "$OCAMLVERSION" ; then
+           AC_MSG_RESULT([versions differs from ocamlc; ocamlopt discarded.])
+           OCAMLOPT=no
+        else
+           OCAMLBEST=opt
+        fi
      fi
 
      AC_SUBST([OCAMLBEST])
@@ -48,25 +48,25 @@ AC_DEFUN([AC_PROG_OCAML],
      # checking for ocamlc.opt
      AC_CHECK_TOOL([OCAMLCDOTOPT],[ocamlc.opt],[no])
      if test "$OCAMLCDOTOPT" != "no"; then
-	TMPVERSION=`$OCAMLCDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
-	if test "$TMPVERSION" != "$OCAMLVERSION" ; then
-	    AC_MSG_RESULT([versions differs from ocamlc; ocamlc.opt discarded.])
-	else
-	    OCAMLC=$OCAMLCDOTOPT
-	fi
+        TMPVERSION=`$OCAMLCDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+        if test "$TMPVERSION" != "$OCAMLVERSION" ; then
+           AC_MSG_RESULT([versions differs from ocamlc; ocamlc.opt discarded.])
+        else
+           OCAMLC=$OCAMLCDOTOPT
+        fi
      fi
 
      # checking for ocamlopt.opt
      if test "$OCAMLOPT" != "no" ; then
-	AC_CHECK_TOOL([OCAMLOPTDOTOPT],[ocamlopt.opt],[no])
-	if test "$OCAMLOPTDOTOPT" != "no"; then
-	   TMPVERSION=`$OCAMLOPTDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
-	   if test "$TMPVERSION" != "$OCAMLVERSION" ; then
-	      AC_MSG_RESULT([version differs from ocamlc; ocamlopt.opt discarded.])
-	   else
-	      OCAMLOPT=$OCAMLOPTDOTOPT
-	   fi
-        fi
+        AC_CHECK_TOOL([OCAMLOPTDOTOPT],[ocamlopt.opt],[no])
+        if test "$OCAMLOPTDOTOPT" != "no"; then
+           TMPVERSION=`$OCAMLOPTDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+           if test "$TMPVERSION" != "$OCAMLVERSION" ; then
+              AC_MSG_RESULT([version differs from ocamlc; ocamlopt.opt discarded.])
+           else
+              OCAMLOPT=$OCAMLOPTDOTOPT
+           fi
+       fi
      fi
 
      AC_SUBST([OCAMLOPT])
@@ -111,10 +111,10 @@ AC_DEFUN([AC_PROG_OCAMLLEX],
   # checking for ocamllex
   AC_CHECK_TOOL([OCAMLLEX],[ocamllex],[no])
   if test "$OCAMLLEX" != "no"; then
-    AC_CHECK_TOOL([OCAMLLEXDOTOPT],[ocamllex.opt],[no])
-    if test "$OCAMLLEXDOTOPT" != "no"; then
-	OCAMLLEX=$OCAMLLEXDOTOPT
-    fi
+     AC_CHECK_TOOL([OCAMLLEXDOTOPT],[ocamllex.opt],[no])
+     if test "$OCAMLLEXDOTOPT" != "no"; then
+        OCAMLLEX=$OCAMLLEXDOTOPT
+     fi
   fi
   AC_SUBST([OCAMLLEX])
 ])
@@ -135,7 +135,7 @@ AC_DEFUN([AC_PROG_CAMLP4],
   if test "$CAMLP4" != "no"; then
      TMPVERSION=`$CAMLP4 -v 2>&1| sed -n -e 's|.*version *\(.*\)$|\1|p'`
      if test "$TMPVERSION" != "$OCAMLVERSION" ; then
-	AC_MSG_RESULT([versions differs from ocamlc])
+        AC_MSG_RESULT([versions differs from ocamlc])
         CAMLP4=no
      fi
   fi
@@ -185,15 +185,15 @@ AC_DEFUN([AC_CHECK_OCAML_PKG],
   found=no
   for pkg in $1 $2 ; do
     if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      AC_MSG_RESULT([found])
-      AS_TR_SH([OCAML_PKG_$1])=$pkg
-      found=yes
-      break
+       AC_MSG_RESULT([found])
+       AS_TR_SH([OCAML_PKG_$1])=$pkg
+       found=yes
+       break
     fi
   done
   if test "$found" = "no" ; then
-    AC_MSG_RESULT([not found])
-    AS_TR_SH([OCAML_PKG_$1])=no
+     AC_MSG_RESULT([not found])
+     AS_TR_SH([OCAML_PKG_$1])=no
   fi
 
   AC_SUBST(AS_TR_SH([OCAML_PKG_$1]))
@@ -210,16 +210,16 @@ EOF
   unset found
   for $1 in $$1 $4 ; do
     if $OCAMLC -c -I "$$1" conftest.ml >&5 2>&5 ; then
-      found=yes
-      break
+       found=yes
+       break
     fi
   done
 
   if test "$found" ; then
-    AC_MSG_RESULT([$$1])
+     AC_MSG_RESULT([$$1])
   else
-    AC_MSG_RESULT([not found])
-    $1=no
+     AC_MSG_RESULT([not found])
+     $1=no
   fi
   AC_SUBST([$1])
 ])
