@@ -1,6 +1,8 @@
 AC_INIT(ocaml-autoconf-example,1.0)
 AM_INIT_AUTOMAKE
 
+AC_CONFIG_MACRO_DIR([m4])
+
 AC_PROG_CC
 
 AC_PROG_OCAML
