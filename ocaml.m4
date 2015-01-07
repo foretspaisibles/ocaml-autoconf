@@ -1,5 +1,6 @@
 dnl autoconf macros for OCaml
 dnl
+dnl Copyright © 2015      Michael Grünewald
 dnl Copyright © 2013      Gabriel Kerneis
 dnl Copyright © 2009      Richard W.M. Jones
 dnl Copyright © 2009      Stefano Zacchiroli
@@ -8,6 +9,29 @@ dnl Copyright © 2000-2005 Jean-Christophe Filliâtre
 dnl Copyright © 2000-2005 Georges Mariano
 dnl
 dnl For documentation, please read the ocaml.m4 man page.
+
+
+# AC_PROG_OCAML
+# -------------
+# This macro detects which tools of the usual OCaml toolchain are
+# available. It defines and substitutes the following variables:
+#
+#  OCAMLC          set to the name of the bytecode compiler
+#                    (eg. "ocamlc" or "ocamlc.opt"), or "no" if
+#                    no OCaml installation was found
+#  OCAMLOPT        the name of the native-code compiler, eg. "ocamlopt",
+#                    "ocamlopt.opt" or "no"
+#  OCAMLBEST       "byte" (if only the bytecode compiler is available)
+#                    or "opt" (if both bytecode and native code compilers
+#                    are available)
+#  OCAMLNATDYNLINK "yes" (if native dynlink is available) or "no"
+#  OCAMLDEP        the name of the dependency resolver, eg. "ocamldep"
+#  OCAMLMKTOP      the name of ocamlmktop
+#  OCAMLMKLIB      the name of ocamlmklib
+#  OCAMLDOC        the name of ocamldoc
+#  OCAMLBUILD      the name of ocamlbuild
+#  OCAMLLIB        the OCaml library path (eg. C</usr/lib/ocaml/>)
+#  OCAMLVERSION    the compiler version (eg. C<3.11.0>)
 
 AC_DEFUN([AC_PROG_OCAML],
 [dnl
@@ -106,6 +130,11 @@ AC_DEFUN([AC_PROG_OCAML],
 ])
 
 
+# AC_PROG_OCAMLLEX
+# ----------------
+# This checks for the ocamllex program and sets OCAMLLEX to the name
+# of the program (eg. ocamllex or ocamllex.opt), or no if not found.
+
 AC_DEFUN([AC_PROG_OCAMLLEX],
 [dnl
   # checking for ocamllex
@@ -119,12 +148,40 @@ AC_DEFUN([AC_PROG_OCAMLLEX],
   AC_SUBST([OCAMLLEX])
 ])
 
+
+# AC_PROG_OCAMLYACC
+# -----------------
+# This checks for the ocamlyacc program and sets OCAMLYACC to the name
+# of the program, or no if not found.
+
 AC_DEFUN([AC_PROG_OCAMLYACC],
 [dnl
   AC_CHECK_TOOL([OCAMLYACC],[ocamlyacc],[no])
   AC_SUBST([OCAMLYACC])
 ])
 
+
+# AC_PROG_CAMLP4
+# --------------
+# This checks for camlp4, and checks that the version matches the
+# compiler version found previously. It sets CAMLP4 to the name of the
+# basic camlp4 program, or no if not found.
+#
+# The macro also checks for other tools of the camlp4 suite like
+# camlp4o, camlp4orf, etc. For each of them, a fully capitalized
+# variable is set to the tool name (or no if not found); all variable
+# are substituted for when filling .in files. The full list of tools
+# and respective variable names is as follows:
+#
+#  camlp4        CAMLP4
+#  camlp4boot    CAMLP4BOOT
+#  camlp4o       CAMLP4O
+#  camlp4of      CAMLP4OF
+#  camlp4oof     CAMLP4OOF
+#  camlp4orf     CAMLP4ORF
+#  camlp4prof    CAMLP4PROF
+#  camlp4r       CAMLP4R
+#  camlp4rf      CAMLP4RF
 
 AC_DEFUN([AC_PROG_CAMLP4],
 [dnl
@@ -161,6 +218,12 @@ AC_DEFUN([AC_PROG_CAMLP4],
 ])
 
 
+# AC_PROG_FINDLIB
+# ---------------
+# This macro checks for the presence of the ocamlfind program (part of
+# findlib). It defines and substitutes OCAMLFIND to the name of the
+# ocamlfind program, or no if not found.
+
 AC_DEFUN([AC_PROG_FINDLIB],
 [dnl
   AC_REQUIRE([AC_PROG_OCAML])dnl
@@ -171,9 +234,27 @@ AC_DEFUN([AC_PROG_FINDLIB],
 ])
 
 
-dnl Thanks to Jim Meyering for working this next bit out for us.
-dnl XXX We should define AS_TR_SH if it's not defined already
-dnl (eg. for old autoconf).
+# AC_CHECK_OCAML_PKG
+# ------------------
+# This is the main macro that can be used to detect the presence of
+# OCaml findlib packages. This macro uses ocamlfind to look up findlib
+# packages (and thus requires that findlib itself has been installed,
+# and that the package has been properly packaged with a META file
+# etc.) If you want to find an OCaml findlib package which hasn't been
+# installed with findlib then you should try using
+# AC_CHECK_OCAML_MODULE instead.
+#
+#   AC_CHECK_OCAML_PKG([name])
+#
+# checks for an OCaml findlib package with the given name. If found,
+# it defines and substitutes the variable OCAML_PKG_name where the
+# name part is substituted for the package name by replacing all
+# dashes with underscores.
+#
+# Thanks to Jim Meyering for working this next bit out for us.
+# XXX We should define AS_TR_SH if it's not defined already
+# (eg. for old autoconf).
+
 AC_DEFUN([AC_CHECK_OCAML_PKG],
 [dnl
   AC_REQUIRE([AC_PROG_FINDLIB])dnl
@@ -200,6 +281,32 @@ AC_DEFUN([AC_CHECK_OCAML_PKG],
 ])
 
 
+# AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATHS)
+# ---------------------------------------------------------
+# AC_CHECK_OCAML_MODULE is the hairier alternative to
+# AC_CHECK_OCAML_PKG. You should always use AC_CHECK_OCAML_PKG and
+# ocamlfind/findlib if possible.
+#
+# The parameters are:
+#
+#   VARIABLE
+#    This is the environment variable that is set. It will either be
+#    set to the include path, or to no if the module was not found.
+#
+#   NAME
+#    This is the name of the module we are looking for. This parameter
+#    is just used for printing messages, and does not affect how the
+#    module is found.
+#
+#   MODULE
+#    This should be an OCaml module name, representing the module name
+#    being looked up. You can put sub-modules here,
+#    eg. CalendarLib.Date
+#
+#  INCLUDE-PATHS
+#    This is the default list of include directories to search,
+#    eg. +calendar
+
 AC_DEFUN([AC_CHECK_OCAML_MODULE],
 [dnl
   AC_MSG_CHECKING([for OCaml module $2])
@@ -225,7 +332,11 @@ EOF
 ])
 
 
-dnl XXX Cross-compiling
+# AC_CHECK_OCAML_WORD_SIZE
+# ------------------------
+# This checks the word size of the OCaml compiler, and sets
+# OCAML_WORD_SIZE to either 32 or 64.
+
 AC_DEFUN([AC_CHECK_OCAML_WORD_SIZE],
 [dnl
   AC_REQUIRE([AC_PROG_OCAML])dnl
