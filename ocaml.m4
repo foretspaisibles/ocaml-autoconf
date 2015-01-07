@@ -362,3 +362,41 @@ EOF
   AC_MSG_RESULT([$OCAML_OS_TYPE])
   AC_SUBST([OCAML_OS_TYPE])
 ])
+
+
+# AC_CHECK_OCAML([ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# --------------------------------------------------------
+# If OCaml is found execute shell commands action-if-found, otherwise
+# execute action-if-not-found.
+
+AC_DEFUN([AC_CHECK_OCAML],
+  [AC_REQUIRE([AC_PROG_OCAML])[]dnl
+  AS_IF([test "$OCAML" = "no"], [$2], [$3])])dnl
+
+
+# AC_NEED_OCAML
+# -------------
+# If OCaml is not found, then terminate the configuration script with
+# an appropriate error message.
+
+AC_DEFUN([AC_NEED_OCAML],
+[AC_CHECK_OCAML([], [AC_MSG_ERROR([OCaml not found.])])])
+
+
+# AC_CHECK_FINDLIB([ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# ----------------------------------------------------------
+# If findlib is found execute shell commands action-if-found,
+# otherwise execute action-if-not-found.
+
+AC_DEFUN([AC_CHECK_FINDLIB],
+  [AC_REQUIRE([AC_PROG_FINDLIB])[]dnl
+  AS_IF([test "$FINDLIB" = "no"], [$2], [$3])])dnl
+
+
+# AC_NEED_FINDLIB
+# ---------------
+# If findlib is not found, then terminate the configuration script
+# with an appropriate error message.
+
+AC_DEFUN([AC_NEED_FINDLIB],
+[AC_CHECK_FINDLIB([], [AC_MSG_ERROR([OCaml findlib not found.])])])
