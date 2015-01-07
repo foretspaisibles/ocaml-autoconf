@@ -234,8 +234,8 @@ AC_DEFUN([AC_PROG_FINDLIB],
 ])
 
 
-# AC_CHECK_OCAML_PKG
-# ------------------
+# AC_CHECK_FINDLIB_PKG(NAME, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# --------------------------------------------------------------------
 # This is the main macro that can be used to detect the presence of
 # OCaml findlib packages. This macro uses ocamlfind to look up findlib
 # packages (and thus requires that findlib itself has been installed,
@@ -244,41 +244,41 @@ AC_DEFUN([AC_PROG_FINDLIB],
 # installed with findlib then you should try using
 # AC_CHECK_OCAML_MODULE instead.
 #
-#   AC_CHECK_OCAML_PKG([name])
+#   AC_CHECK_FINDLIB_PKG([name])
 #
-# checks for an OCaml findlib package with the given name. If found,
-# it defines and substitutes the variable OCAML_PKG_name where the
-# name part is substituted for the package name by replacing all
-# dashes with underscores.
-#
-# Thanks to Jim Meyering for working this next bit out for us.
-# XXX We should define AS_TR_SH if it's not defined already
-# (eg. for old autoconf).
+# checks for an OCaml findlib package with the given name.
 
-AC_DEFUN([AC_CHECK_OCAML_PKG],
+AC_DEFUN([AC_CHECK_FINDLIB_PKG],
 [dnl
   AC_REQUIRE([AC_PROG_FINDLIB])dnl
 
-  AC_MSG_CHECKING([for OCaml findlib package $1])
+  AC_MSG_CHECKING([for findlib package $1])
 
   unset found
   unset pkg
   found=no
-  for pkg in $1 $2 ; do
+  for pkg in $1; do
     if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
        AC_MSG_RESULT([found])
-       AS_TR_SH([OCAML_PKG_$1])=$pkg
        found=yes
        break
     fi
   done
   if test "$found" = "no" ; then
      AC_MSG_RESULT([not found])
-     AS_TR_SH([OCAML_PKG_$1])=no
   fi
-
-  AC_SUBST(AS_TR_SH([OCAML_PKG_$1]))
+  AS_IF([test "$found" = "no"], [$3], [$2])])dnl
 ])
+
+
+# AC_NEED_FINDLIB_PKG(NAME)
+# -------------------------
+# If OCaml findlib package name is not found, then terminate the
+# configuration script with an appropriate error message.
+
+AC_DEFUN([AC_NEED_FINDLIB_PKG],
+[AC_CHECK_OCAML_PKG([$1],
+  [], [AC_MSG_ERROR([OCaml findlib package $1 not found.])])])
 
 
 # AC_CHECK_OCAML_MODULE(VARIABLE,NAME,MODULE,INCLUDE-PATHS)
